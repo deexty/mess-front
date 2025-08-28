@@ -1,0 +1,152 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 2021,
+    "sourceType": "module"
+  },
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "plugin:security/recommended-legacy",
+    "plugin:tailwindcss/recommended",
+    "plugin:promise/recommended",
+    "plugin:prettier/recommended",
+    "plugin:regexp/recommended"
+  ],
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "react-hooks",
+    "jsx-a11y",
+    "import",
+    "unused-imports",
+    "security",
+    "promise",
+    "prettier",
+    "compat",
+    "regexp",
+    "tailwindcss"
+  ],
+  "rules": {
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "no-debugger": "error",
+    "react-hooks/exhaustive-deps": "off",
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-var-requires": "error",
+    "@typescript-eslint/explicit-module-boundary-types": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
+    "@typescript-eslint/consistent-type-imports": "error",
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": ["error", { "extensions": [".tsx"] }],
+    "react/self-closing-comp": "error",
+    "react/jsx-no-duplicate-props": "error",
+    "react/jsx-boolean-value": ["error", "never"],
+    "react/jsx-curly-brace-presence": [
+      "error",
+      { "props": "never", "children": "never" }
+    ],
+    "react/jsx-no-useless-fragment": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "jsx-a11y/anchor-is-valid": "error",
+    "jsx-a11y/no-autofocus": "error",
+    "jsx-a11y/no-static-element-interactions": "error",
+    "import/no-unresolved": "error",
+    "import/named": "error",
+    "import/namespace": "error",
+    "import/default": "error",
+    "import/export": "error",
+    "import/no-duplicates": "error",
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index"
+        ],
+        "newlines-between": "always"
+      }
+    ],
+    "import/newline-after-import": "error",
+    "import/no-named-as-default": "error",
+    "import/no-named-as-default-member": "error",
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "no-redeclare": "error",
+    "no-extra-boolean-cast": "off",
+    "@next/next/no-img-element": "off",
+    "security/detect-object-injection": "off",
+    "promise/always-return": "off",
+    "promise/no-return-wrap": "error",
+    "promise/param-names": "error",
+    "promise/catch-or-return": "off",
+    "prettier/prettier": "error",
+    "react/function-component-definition": [
+      "off",
+      {
+        "namedComponents": "arrow-function",
+        "unnamedComponents": "arrow-function"
+      }
+    ],
+    "react/jsx-props-no-spreading": "off",
+    "react/jsx-no-bind": "off",
+    "react/jsx-key": "error",
+    "react/no-unescaped-entities": "error",
+    "regexp/no-dupe-characters-character-class": "error",
+    "regexp/no-empty-alternative": "error"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    },
+    "tailwindcss": {
+      "callees": ["classnames", "clsx", "ctl"],
+      "config": "tailwind.config.js",
+      "cssFiles": ["**/*.css", "**/*.scss"],
+      "removeDuplicates": true
+    }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts", "**/*.tsx"],
+      "rules": {
+        "no-undef": "off"
+      }
+    }
+  ]
+}

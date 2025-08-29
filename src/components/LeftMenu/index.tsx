@@ -14,19 +14,24 @@ const LeftMenu: React.FC = React.memo(function LeftMenu() {
             onClick: () => router.push("/dashboard"),
         },
         {
-            key: "condominiums",
+            key: "condominios",
             label: "Condomínios",
             onClick: () => router.push("/dashboard/condominios"),
         },
         {
-            key: "syndics",
+            key: "sindicos",
             label: "Sindicos",
             onClick: () => router.push("/dashboard/sindicos"),
         },
         {
-            key: "contracts",
+            key: "contratos",
             label: "Contratos",
             onClick: () => router.push("/dashboard/contratos"),
+        },
+        {
+            key: "financeiro",
+            label: "Financeiro",
+            onClick: () => router.push("/dashboard/financeiro"),
         },
     ];
 

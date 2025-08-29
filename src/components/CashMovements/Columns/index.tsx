@@ -1,4 +1,6 @@
+import { CashMovementStatusEnum, ICashMovement } from "@/infra/interfaces/cashMovement.interface"
 import { IContract } from "@/infra/interfaces/contract.interface"
+import { ICondominium } from "@/infra/interfaces/condominium.interface"
 import { userService } from "@/infra/services/user"
 import Masks from "@/infra/utils/Masks"
 import { App, Tag } from "antd"
@@ -7,11 +9,31 @@ import dayjs from "dayjs"
 import { useRouter } from "next/navigation"
 import { FaRegTrashAlt } from "react-icons/fa"
 import { HiMiniPencilSquare } from "react-icons/hi2"
+import EditCashMovementModal from "../Edit"
 
-export const ContractColumns = (refresh: VoidFunction): ColumnType<IContract>[] => {
+
+export const cashMovementStatusMapper: Record<CashMovementStatusEnum, { label: string; color: string }> = {
+    [CashMovementStatusEnum.PREDICTED]: {
+        label: "Previsto",
+        color: "blue",
+    },
+    [CashMovementStatusEnum.LATE]: {
+        label: "Atrasado",
+        color: "red",
+    },
+    [CashMovementStatusEnum.PAYED]: {
+        label: "Pago",
+        color: "green",
+    },
+};
+
+
+export const CashMovementsColumns = (refresh: VoidFunction): ColumnType<ICashMovement>[] => {
     const router = useRouter()
 
     const { notification } = App.useApp();
+
+
 
     const deleteHandle = async (id: string) => {
         await userService.remove(id.toString()).then(() => {
@@ -30,51 +52,42 @@ export const ContractColumns = (refresh: VoidFunction): ColumnType<IContract>[] 
 
     return [
         {
-            title: 'Nome',
-            dataIndex: 'name',
-            key: 'name',
-        },
-        {
-            title: 'Condominio',
-            dataIndex: 'condominium',
-            key: 'condominium',
+            title: 'Valor',
+            dataIndex: 'amount',
+            key: 'amount',
             render(value) {
-                return value?.corporate_name
+                return Masks.money(value)
             }
         },
         {
             title: 'Status',
+            dataIndex: 'status',
+            key: 'status',
             render(value) {
-                const isExpired = dayjs(value.expiration_date).isBefore(dayjs())
+                return <Tag color={cashMovementStatusMapper[value].color}>{cashMovementStatusMapper[value].label}</Tag>
+            }
+        },
+        {
+            title: 'Contrato',
+            dataIndex: 'contract',
+            key: 'contract',
+            render(value: IContract) {
+                return value?.name
+            }
+        },
+        {
+            title: 'Condominio',
+            dataIndex: 'contract',
+            key: 'contract',
+            render(value: IContract) {
+                return value?.condominium?.corporate_name
+            }
+        },
 
-                return <Tag color={isExpired ? 'red' : 'green'}>{isExpired ? 'Vencido' : 'Ativo'}</Tag>
-            }
-        },
         {
-            title: 'QTD. unidades',
-            dataIndex: 'unit_qtd',
-            key: 'unit_qtd',
-        },
-        {
-            title: 'Comissão',
-            dataIndex: 'comission',
-            key: 'comission',
-            render(value) {
-                return Masks.money(value)
-            }
-        },
-        {
-            title: 'Valor mensal',
-            dataIndex: 'month_value',
-            key: 'month_value',
-            render(value) {
-                return Masks.money(value)
-            }
-        },
-        {
-            title: 'Data de vencimento',
-            dataIndex: 'expiration_date',
-            key: 'expiration_date',
+            title: 'Data de referência',
+            dataIndex: 'reference_date',
+            key: 'reference_date',
             render(value) {
                 return dayjs(value).format('DD/MM/YYYY')
             }
@@ -84,7 +97,7 @@ export const ContractColumns = (refresh: VoidFunction): ColumnType<IContract>[] 
             render(value, record, index) {
                 return (
                     <div className="flex gap-4">
-                        <button className="text-primary cursor-pointer" onClick={() => router.push(`/dashboard/contratos/editar/${record.id}`)}><HiMiniPencilSquare size={18} /></button>
+                        <EditCashMovementModal record={record} refresh={refresh} />
                         <button className="text-primary cursor-pointer" onClick={() => deleteHandle(record.id)}><FaRegTrashAlt size={14} color="red" /></button>
                     </div>
                 )

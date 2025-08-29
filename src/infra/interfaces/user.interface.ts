@@ -6,8 +6,19 @@ export enum IUserType {
 }
 
 export interface IUser {
-    id: number;
+    id: string;
+    phone: string;
+    document: string;
     name: string;
     login: string;
-    type: IUserType;
+    role: IUserType;
+}
+
+export interface ICreateUser {
+    name: string;
+    login: string;
+    password: string;
+    phone: string;
+    document: string;
+    role: IUserType;
 }

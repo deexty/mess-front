@@ -92,6 +92,10 @@ const Masks = {
     },
 
     money(value: string | number): string {
+        if (value === '') {
+            return 'R$ 0,00'
+        }
+
         const floatValue = parseFloat(String(this.clearMoney(value.toString())));
         const formattedValue = floatValue.toLocaleString("pt-BR", {
             minimumFractionDigits: 2,

@@ -4,7 +4,7 @@ import CondominiumsForm from "@/components/Condominiums/Form";
 import ListHydromethers from "@/components/Hydromethers/List";
 import PageContainer from "@/components/PageContainer";
 import { useCondominium } from "@/infra/hooks/useCondominium";
-import { useHydrometers } from "@/infra/hooks/useUsers copy";
+import { useHydrometers } from "@/infra/hooks/useHydrometers";
 import { App, Button, Form, Table, Tabs } from "antd";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";

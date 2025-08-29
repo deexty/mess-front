@@ -15,14 +15,15 @@ export default function Home() {
     await authService.login(values).then(({ data: { token, user } }) => {
       login({ user, token })
       notification.success({ message: 'Login', description: 'Login realizado com sucesso' })
-      router.push('/dashboard')
+      router.push('/dashboard/agenda')
     }).catch((error) => {
       notification.error({ message: 'Login', description: error.response.data.message })
     })
   }, [])
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center flex-col items-center h-screen">
+      <img src="/messentech.png" alt="Logo" className="size-56 mb-7" />
       <div className="min-w-[400px]">
         <Form layout="vertical" onFinish={loginHandle}>
           <Form.Item

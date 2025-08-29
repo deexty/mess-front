@@ -30,15 +30,18 @@ const PageContainer: React.FC<IPageContainerProps> = React.memo(function PageCon
         <div className="w-full min-h-screen flex items-center justify-center px-8">
             <div className="w-full bg-white p-8 rounded-2xl">
                 {header && (
-                    <div className="mb-12">
-                        <h1 className="text-2xl font-bold">
-                            {header.title}
-                        </h1>
-                        {header.description && (
-                            <p className="text-base">
-                                {header.description}
-                            </p>
-                        )}
+                    <div className="flex justify-between items-center">
+                        <div className="mb-8">
+                            <h1 className="text-2xl font-bold">
+                                {header.title}
+                            </h1>
+                            {header.description && (
+                                <p className="text-base">
+                                    {header.description}
+                                </p>
+                            )}
+                        </div>
+                        {!canBack && action}
                     </div>
                 )}
                 <div className="flex justify-between items-center">
@@ -50,7 +53,7 @@ const PageContainer: React.FC<IPageContainerProps> = React.memo(function PageCon
                             </h1>
                         </button>
                     )}
-                    {action}
+                    {canBack && action}
                 </div>
                 {children}
             </div>

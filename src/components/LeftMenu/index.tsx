@@ -1,17 +1,19 @@
 'use client';
 
-import { Menu } from "antd";
+import { useAuth } from "@/contexts/useAuth";
+import { Button, Menu } from "antd";
 import { useRouter } from "next/navigation";
 import React from "react";
 
 const LeftMenu: React.FC = React.memo(function LeftMenu() {
     const router = useRouter();
+    const { logout } = useAuth()
 
     const items = [
         {
-            key: "dashboard",
-            label: "Dashboard",
-            onClick: () => router.push("/dashboard"),
+            key: "agenda",
+            label: "Agenda",
+            onClick: () => router.push("/dashboard/agenda"),
         },
         {
             key: "condominios",
@@ -36,12 +38,18 @@ const LeftMenu: React.FC = React.memo(function LeftMenu() {
     ];
 
     return (
-        <div className="h-screen flex justify-center items-center min-w-[250px] bg-white px-4">
+        <div className="flex items-center justify-between flex-col min-w-[250px] bg-white px-4 py-12">
+            <img src="/messentech.png" alt="Logo" className="size-40" />
             <Menu
                 mode="inline"
-                defaultSelectedKeys={["dashboard"]}
+                defaultSelectedKeys={["agenda"]}
                 items={items}
             />
+            <Button className="w-full" onClick={() => {
+                logout()
+                router.push("/")
+            }}>Sair</Button>
+
         </div>
     );
 });

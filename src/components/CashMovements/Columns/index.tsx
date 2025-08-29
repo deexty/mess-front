@@ -64,7 +64,7 @@ export const CashMovementsColumns = (refresh: VoidFunction): ColumnType<ICashMov
             dataIndex: 'status',
             key: 'status',
             render(value) {
-                return <Tag color={cashMovementStatusMapper[value].color}>{cashMovementStatusMapper[value].label}</Tag>
+                return <Tag color={cashMovementStatusMapper[value as CashMovementStatusEnum].color}>{cashMovementStatusMapper[value as CashMovementStatusEnum].label}</Tag>
             }
         },
         {

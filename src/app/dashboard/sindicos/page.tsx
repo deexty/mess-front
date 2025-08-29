@@ -5,6 +5,7 @@ import { UserColumns } from "@/components/Users/Columns";
 import CreateSindicModal from "@/components/Users/Create";
 import { useUsers } from "@/infra/hooks/useUsers";
 import { FilterTypeEnum, IParseFilter } from "@/infra/interfaces/parse-filters";
+import { IUserType } from "@/infra/interfaces/user.interface";
 import useDebounce from "@/infra/utils/UseDebonce";
 import { Button, Input, Table } from "antd";
 import { useRouter } from "next/navigation";
@@ -20,7 +21,14 @@ const SyndicsListPage: React.FC = React.memo(function SyndicsListPage() {
     const { users, usersLoading, usersRefresh, usersTotal } = useUsers({
         page: useMemo(() => page, [page]),
         per_page: 10,
-        filters: useMemo(() => filters, [filters])
+        filters: useMemo(() => [
+            ...filters,
+            {
+                filterBy: "role",
+                filterValue: IUserType.SYNDIC,
+                filterType: FilterTypeEnum.EQUAL
+            }
+        ], [filters])
     })
 
     useEffect(() => {

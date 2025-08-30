@@ -35,6 +35,11 @@ const LeftMenu: React.FC = React.memo(function LeftMenu() {
             label: "Financeiro",
             onClick: () => router.push("/dashboard/financeiro"),
         },
+        {
+            key: "leituras",
+            label: "Leituras",
+            onClick: () => router.push("/dashboard/leituras"),
+        },
     ];
 
     return (

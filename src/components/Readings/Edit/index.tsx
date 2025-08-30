@@ -3,18 +3,20 @@ import { App, Button, Form, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import ReadingForm from "../Form";
 import { hydrometerService } from "@/infra/services/hydromether";
-import { GoPlus } from "react-icons/go";
-import { ICreateReading } from "@/infra/interfaces/reading.interface";
+import { ICreateReading, IReading } from "@/infra/interfaces/reading.interface";
+import dayjs from "dayjs";
 
 
-interface ICreateReadingModalProps {
+interface IEditReadingModalProps {
     condominiumId?: string
     refresh?: () => void
+    record: IReading
 }
 
-const CreateReadingModal: React.FC<ICreateReadingModalProps> = React.memo(function CreateReadingModal({
+const EditReadingModal: React.FC<IEditReadingModalProps> = React.memo(function EditReadingModal({
     condominiumId,
-    refresh
+    refresh,
+    record
 }) {
     const [open, setOpen] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
@@ -23,16 +25,11 @@ const CreateReadingModal: React.FC<ICreateReadingModalProps> = React.memo(functi
     const { notification } = App.useApp()
 
     const createReading = async (data: ICreateReading) => {
+        console.log(data)
         try {
             setLoading(true)
 
-            const newFormData = new FormData()
-
-            for (const [key, value] of Object.entries(data)) {
-                newFormData.append(key, value)
-            }
-
-            await hydrometerService.createReading(newFormData)
+            await hydrometerService.updateReading(data, record.id as string)
             setOpen(false)
             form.resetFields()
             notification.success({ message: 'Leitura', description: 'Leitura criada com sucesso' })
@@ -44,17 +41,23 @@ const CreateReadingModal: React.FC<ICreateReadingModalProps> = React.memo(functi
         }
     }
 
+    useEffect(() => {
+        if (record) {
+            const imagePath = record?.image_path?.replace(/\.tmp\//, '')
+            form.setFieldsValue({ ...record, file: `${process.env.NEXT_PUBLIC_API_URL_FILES}${imagePath}`, reference_date: record.reference_date ? dayjs(record.reference_date) : null })
+        }
+    }, [record])
+
     return (
         <>
-            <Button onClick={() => setOpen(true)} icon={<GoPlus />} size="large">Adicionar leitura</Button>
+            <button onClick={() => setOpen(true)}>teste</button>
             <Modal open={open} onCancel={() => {
                 setOpen(false)
-                form.resetFields()
             }} title="Adicionar leitura" okText="Salvar" onOk={form.submit} okButtonProps={{ size: 'large', loading: loading }} cancelButtonProps={{ size: 'large' }}>
-                <ReadingForm form={form} onSubmit={createReading} condominiumId={condominiumId} />
+                <ReadingForm form={form} onSubmit={createReading} condominiumId={condominiumId} isEdit={true} />
             </Modal>
         </>
     );
 });
 
-export default CreateReadingModal;
+export default EditReadingModal;

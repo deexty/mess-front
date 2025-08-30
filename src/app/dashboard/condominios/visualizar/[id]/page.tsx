@@ -3,6 +3,7 @@
 import CondominiumsForm from "@/components/Condominiums/Form";
 import ListHydromethers from "@/components/Hydromethers/List";
 import PageContainer from "@/components/PageContainer";
+import ListReadings from "@/components/Readings/List";
 import { useCondominium } from "@/infra/hooks/useCondominium";
 import { useHydrometers } from "@/infra/hooks/useHydrometers";
 import { App, Button, Form, Table, Tabs } from "antd";
@@ -38,6 +39,11 @@ const ViewCondominiumPage: React.FC = React.memo(function ViewCondominiumPage() 
                     key: 'hidometers',
                     label: 'Hidrômetros',
                     children: <ListHydromethers condominiumId={id as string} />
+                },
+                {
+                    key: 'readings',
+                    label: 'Leituras',
+                    children: <ListReadings condominiumId={id as string} />
                 }
             ]} />
 

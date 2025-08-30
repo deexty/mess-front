@@ -7,7 +7,7 @@ import { FaRegTrashAlt } from "react-icons/fa"
 import { HiMiniPencilSquare } from "react-icons/hi2"
 import { IoEyeOutline } from "react-icons/io5"
 
-export const CondominiumColumns = (refresh: VoidFunction): ColumnType<ICondominium>[] => {
+export const CondominiumColumns = (refresh: VoidFunction,): ColumnType<ICondominium>[] => {
     const router = useRouter()
 
     const { notification } = App.useApp();

@@ -13,6 +13,7 @@ export type FilterType =
     | "is_null";
 
 export enum FilterTypeEnum {
+    BTW = "btw",
     EQUAL = "eq",
     NOT = "not",
     LIKE = "like",

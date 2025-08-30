@@ -5,20 +5,21 @@ import { Button, DatePicker, Flex, Form, FormInstance, Image, Input, Select, Upl
 import React, { useEffect, useMemo, useState } from "react";
 import { UploadOutlined } from '@ant-design/icons';
 import { IHydrometer } from "@/infra/interfaces/hydrometer.interface";
-import { ICreateReading } from "@/infra/interfaces/reading.interface";
+import { ICreateReading, ReadingStatusMapper } from "@/infra/interfaces/reading.interface";
 
 interface IReadingFormProps {
     form: FormInstance,
     onSubmit?: (data: ICreateReading) => void,
     condominiumId?: string
+    isEdit?: boolean
 }
 
 const ReadingForm: React.FC<IReadingFormProps> = React.memo(function ReadingForm({
     form,
     onSubmit,
     condominiumId,
+    isEdit
 }) {
-    const [selectedHydrometer, setSelectedHydrometer] = useState<IHydrometer>();
 
     const { hydrometers, hydrometersLoading } = useHydrometers({
         page: 1,
@@ -37,8 +38,13 @@ const ReadingForm: React.FC<IReadingFormProps> = React.memo(function ReadingForm
         }, [])
     })
 
+    useEffect(() => {
+        console.log(form.getFieldsValue())
+    }, [isEdit])
+
     const file = Form.useWatch('file', form);
     const previewUrl = React.useMemo(() => {
+        console.log(file, 'teste')
         if (!file) return undefined;
         if (typeof file === "string") return file;
         if (file instanceof File) return URL.createObjectURL(file);
@@ -52,10 +58,11 @@ const ReadingForm: React.FC<IReadingFormProps> = React.memo(function ReadingForm
     }, [previewUrl]);
 
 
+
     return (
         <Form form={form} layout="vertical" onFinish={onSubmit} >
             <Form.Item name='qr_code_result' label="Hidrometro" rules={[{ required: true, message: 'Hidrometro é obrigatório' }]}>
-                <Select size="large" loading={hydrometersLoading} options={hydrometers?.map((hydrometer) => ({ label: hydrometer.identifier, value: hydrometer.identifier }))} onChange={(value) => setSelectedHydrometer(hydrometers?.find((hydrometer) => hydrometer.identifier === value))} />
+                <Select disabled={isEdit} size="large" loading={hydrometersLoading} options={hydrometers?.map((hydrometer) => ({ label: hydrometer.identifier, value: hydrometer.identifier }))} />
             </Form.Item>
             <Form.Item name="black_digits" label="Digitos de consumo de água (m³)" rules={[{ required: true, message: 'Digitos de consumo de água (m³) é obrigatório' }]}>
                 <Input size="large" type="number" onChange={(e) => form.setFieldValue("black_digits", Masks.justNumbers(e.target.value))} />
@@ -63,6 +70,11 @@ const ReadingForm: React.FC<IReadingFormProps> = React.memo(function ReadingForm
             <Form.Item name="red_digits" label="Digitos de consumo de água (L)" rules={[{ required: true, message: 'Digitos de consumo de água (L) é obrigatório' },]}>
                 <Input size="large" type="number" onChange={(e) => form.setFieldValue("red_digits", Masks.justNumbers(e.target.value))} />
             </Form.Item>
+            {isEdit && (
+                <Form.Item name={'status'} label="Status">
+                    <Select size="large" options={Object.keys(ReadingStatusMapper).map(s => ({ label: ReadingStatusMapper[s as keyof typeof ReadingStatusMapper], value: s }))} />
+                </Form.Item>
+            )}
             <Form.Item
                 name="reference_date"
                 label="Data de referência"
@@ -70,25 +82,35 @@ const ReadingForm: React.FC<IReadingFormProps> = React.memo(function ReadingForm
             >
                 <DatePicker format="DD/MM/YYYY" size="large" />
             </Form.Item>
-            <Form.Item name="file" label="Arquivo de leitura" rules={[{ required: true, message: 'Arquivo de leitura é obrigatório' }]}>
-                <Flex vertical gap={16}>
-                    <Upload
-                        accept="image/*"
-                        maxCount={1}
-                        beforeUpload={() => false}
-                        onChange={(info) => {
-                            const f = info.file.originFileObj ?? info.file;
-                            form.setFieldValue("file", f);
-                        }}
-                        showUploadList={false}
-                    >
-                        <Button icon={<UploadOutlined />} className="w-full">
-                            Selecionar arquivo de leitura
-                        </Button>
-                    </Upload>
-                    {previewUrl && <Image width={200} src={previewUrl} />}
-                </Flex>
-            </Form.Item>
+
+            {!isEdit && (
+                <Form.Item name="file" label="Arquivo de leitura" rules={[{ required: true, message: 'Arquivo de leitura é obrigatório' }]}>
+                    <Flex vertical gap={16}>
+                        <Upload
+                            accept="image/*"
+                            maxCount={1}
+                            beforeUpload={() => false}
+                            onChange={(info) => {
+                                const f = info.file.originFileObj ?? info.file;
+                                form.setFieldValue("file", f);
+                            }}
+                            showUploadList={false}
+                        >
+                            <Button icon={<UploadOutlined />} className="w-full">
+                                Selecionar arquivo de leitura
+                            </Button>
+                        </Upload>
+                    </Flex>
+                </Form.Item>
+            )}
+
+            {isEdit && (
+                <Form.Item name={'file'} className="hidden">
+                    <Input size="large" />
+                </Form.Item>
+            )}
+            {previewUrl && <Image className="w-full" src={previewUrl} />}
+
         </Form>
     );
 });

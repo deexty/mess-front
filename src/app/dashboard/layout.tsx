@@ -29,7 +29,9 @@ export default function DashboardLayout({
     return (
         <Layout>
             <div className="flex">
-                <LeftMenu />
+                <div className="mr-[250px]">
+                    <LeftMenu />
+                </div>
                 {children}
             </div>
         </Layout>

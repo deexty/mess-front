@@ -48,7 +48,7 @@ const LeftMenu: React.FC = React.memo(function LeftMenu() {
     ];
 
     return (
-        <div className="flex items-center justify-between flex-col min-w-[250px] bg-white px-4 py-12">
+        <div className="flex items-center justify-between flex-col min-w-[250px] bg-white px-4 py-12 fixed h-screen">
             <img src="/messentech.png" alt="Logo" className="size-40" />
             <Menu
                 mode="inline"

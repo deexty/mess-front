@@ -26,6 +26,11 @@ const LeftMenu: React.FC = React.memo(function LeftMenu() {
             onClick: () => router.push("/dashboard/sindicos"),
         },
         {
+            key: "operadores",
+            label: "Operadores",
+            onClick: () => router.push("/dashboard/operadores"),
+        },
+        {
             key: "contratos",
             label: "Contratos",
             onClick: () => router.push("/dashboard/contratos"),

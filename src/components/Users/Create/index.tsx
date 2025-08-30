@@ -6,10 +6,12 @@ import { authService } from "@/infra/services/auth";
 
 interface IUserFormProps {
     refresh: VoidFunction
+    role: IUserType
 }
 
 const CreateSindicModal: React.FC<IUserFormProps> = React.memo(function CreateSindicModal({
-    refresh
+    refresh,
+    role
 }) {
     const [open, setOpen] = useState<boolean>(false)
     const [loading, setLoading] = useState<boolean>(false)
@@ -22,19 +24,19 @@ const CreateSindicModal: React.FC<IUserFormProps> = React.memo(function CreateSi
 
         setLoading(true)
 
-        await authService.register({ ...data, role: IUserType.SYNDIC }).then(() => {
+        await authService.register({ ...data, role: role ?? IUserType.SYNDIC }).then(() => {
             setOpen(false)
             form.resetFields()
             refresh()
-            notification.success({ message: 'Sindico', description: 'Sindico criado com sucesso' })
+            notification.success({ message: 'Usuario', description: 'Usuario criado com sucesso' })
         }).catch((error) => {
-            notification.error({ message: 'Sindico', description: error.response.data.message })
+            notification.error({ message: 'Usuario', description: error.response.data.message })
         }).finally(() => setLoading(false))
     }
 
     return (
         <>
-            <Button type="primary" size="large" onClick={() => setOpen(true)}>Criar sindico</Button>
+            <Button type="primary" size="large" onClick={() => setOpen(true)}>{role === IUserType.OPERATOR ? 'Criar operador' : 'Criar sindico'}</Button>
             <Modal open={open} onCancel={() => {
                 setOpen(false)
                 form.resetFields()
@@ -43,7 +45,7 @@ const CreateSindicModal: React.FC<IUserFormProps> = React.memo(function CreateSi
                 onOk={form.submit}
                 okButtonProps={{ size: 'large', loading }}
                 cancelButtonProps={{ size: 'large' }}
-                title="Criar sindico"
+                title="Criar usuario"
             >
                 <UserForm form={form} onSubmit={createUserHandle} />
             </Modal>

@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation"
 import { FaRegTrashAlt } from "react-icons/fa"
 import { HiMiniPencilSquare } from "react-icons/hi2"
 import EditCashMovementModal from "../Edit"
+import { cashMovementService } from "@/infra/services/cashMovement"
 
 
 export const cashMovementStatusMapper: Record<CashMovementStatusEnum, { label: string; color: string }> = {
@@ -36,15 +37,15 @@ export const CashMovementsColumns = (refresh: VoidFunction): ColumnType<ICashMov
 
 
     const deleteHandle = async (id: string) => {
-        await userService.remove(id.toString()).then(() => {
+        await cashMovementService.remove(id.toString()).then(() => {
             notification.success({
-                message: 'Sindico',
-                description: 'Sindico removido com sucesso'
+                message: 'Movimentacao',
+                description: 'Movimentacao removido com sucesso'
             })
             refresh()
         }).catch(() => {
             notification.error({
-                message: 'Sindico',
+                message: 'Movimentacao',
                 description: 'Erro ao remover sindico'
             })
         })

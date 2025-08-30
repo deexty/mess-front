@@ -1,4 +1,5 @@
 import { IContract } from "@/infra/interfaces/contract.interface"
+import { contractService } from "@/infra/services/contract"
 import { userService } from "@/infra/services/user"
 import Masks from "@/infra/utils/Masks"
 import { App, Tag } from "antd"
@@ -7,6 +8,7 @@ import dayjs from "dayjs"
 import { useRouter } from "next/navigation"
 import { FaRegTrashAlt } from "react-icons/fa"
 import { HiMiniPencilSquare } from "react-icons/hi2"
+import { IoEyeOutline } from "react-icons/io5"
 
 export const ContractColumns = (refresh: VoidFunction): ColumnType<IContract>[] => {
     const router = useRouter()
@@ -14,15 +16,15 @@ export const ContractColumns = (refresh: VoidFunction): ColumnType<IContract>[] 
     const { notification } = App.useApp();
 
     const deleteHandle = async (id: string) => {
-        await userService.remove(id.toString()).then(() => {
+        await contractService.remove(id.toString()).then(() => {
             notification.success({
-                message: 'Sindico',
-                description: 'Sindico removido com sucesso'
+                message: 'Contrato',
+                description: 'Contrato removido com sucesso'
             })
             refresh()
         }).catch(() => {
             notification.error({
-                message: 'Sindico',
+                message: 'Contrato',
                 description: 'Erro ao remover sindico'
             })
         })
@@ -84,6 +86,7 @@ export const ContractColumns = (refresh: VoidFunction): ColumnType<IContract>[] 
             render(value, record, index) {
                 return (
                     <div className="flex gap-4">
+                        <button className="text-primary cursor-pointer" onClick={() => router.push(`/dashboard/contratos/visualizar/${record.id}`)}><IoEyeOutline size={18} /></button>
                         <button className="text-primary cursor-pointer" onClick={() => router.push(`/dashboard/contratos/editar/${record.id}`)}><HiMiniPencilSquare size={18} /></button>
                         <button className="text-primary cursor-pointer" onClick={() => deleteHandle(record.id)}><FaRegTrashAlt size={14} color="red" /></button>
                     </div>

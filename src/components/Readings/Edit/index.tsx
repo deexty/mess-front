@@ -5,6 +5,7 @@ import ReadingForm from "../Form";
 import { hydrometerService } from "@/infra/services/hydromether";
 import { ICreateReading, IReading } from "@/infra/interfaces/reading.interface";
 import dayjs from "dayjs";
+import { HiMiniPencilSquare } from "react-icons/hi2";
 
 
 interface IEditReadingModalProps {
@@ -50,7 +51,7 @@ const EditReadingModal: React.FC<IEditReadingModalProps> = React.memo(function E
 
     return (
         <>
-            <button onClick={() => setOpen(true)}>teste</button>
+            <button className="cursor-pointer" onClick={() => setOpen(true)}><HiMiniPencilSquare size={16} /></button>
             <Modal open={open} onCancel={() => {
                 setOpen(false)
             }} title="Adicionar leitura" okText="Salvar" onOk={form.submit} okButtonProps={{ size: 'large', loading: loading }} cancelButtonProps={{ size: 'large' }}>

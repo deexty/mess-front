@@ -15,10 +15,12 @@ import CreateReadingModal from "../Create";
 
 interface IListReadingsProps {
     condominiumId?: string
+    hasActions?: boolean
 }
 
 const ListReadings: React.FC<IListReadingsProps> = React.memo(function ListReadings({
-    condominiumId
+    condominiumId,
+    hasActions = true
 }) {
     const [page, setPage] = useState<number>(1)
     const [filters, setFilters] = useState<IParseFilter[]>([])
@@ -73,14 +75,20 @@ const ListReadings: React.FC<IListReadingsProps> = React.memo(function ListReadi
         <>
             <div className="flex items-center justify-between mb-8">
                 <div className="flex gap-4  items-center">
+                    {/* @ts-expect-error any */}
                     <DatePicker.RangePicker onChange={setDateFilter} value={dateFilter} format="DD/MM/YYYY" size="large" />
                     <Select className="min-w-[200px]" placeholder="Status" size="large" options={Object.keys(ReadingStatusMapper).map(s => ({ label: ReadingStatusMapper[s as keyof typeof ReadingStatusMapper], value: s }))} onChange={setStatusFilter} />
                 </div>
                 <div className="flex gap-4 items-center">
                     <CreateReadingModal refresh={readingsRefresh} />
-                    <TelemetryModal refresh={readingsRefresh} />
-                    <SAEEModal />
+                    {hasActions && (
+                        <>
+                            <TelemetryModal refresh={readingsRefresh} />
+                            <SAEEModal />
+                        </>
+                    )}
                 </div>
+
             </div>
             <Table rowKey="id" dataSource={readings} loading={readingsLoading} columns={ReadingColumn(readingsRefresh)}
                 pagination={

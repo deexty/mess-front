@@ -11,6 +11,19 @@ import { useCashMovements } from "@/infra/hooks/useCashMovements";
 import { useCondominiums } from "@/infra/hooks/useCondominiums";
 import { useContracts } from "@/infra/hooks/useContracts";
 import CreateCashMovementModal from "@/components/CashMovements/Create";
+import { useFinanceReports } from "@/infra/hooks/useFinanceReport";
+import { Bar } from "react-chartjs-2";
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+} from "chart.js";
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const CashMovementsListPage: React.FC = React.memo(function CashMovementsListPage() {
     const router = useRouter()
@@ -64,6 +77,11 @@ const CashMovementsListPage: React.FC = React.memo(function CashMovementsListPag
                 return [];
             }
         }, [searchContractDebounced])
+    })
+
+    const { financeReports } = useFinanceReports({
+        condominium_id: useMemo(() => selectedCondominium, [selectedCondominium]),
+        contract_id: useMemo(() => selectedContract, [selectedContract])
     })
 
 
@@ -137,6 +155,7 @@ const CashMovementsListPage: React.FC = React.memo(function CashMovementsListPag
                 </div>
                 <CreateCashMovementModal refresh={cashMovementsRefresh} />
             </div>
+            <FinanceChart data={financeReports} />
             <Table rowKey={(record) => record.id} dataSource={cashMovements} loading={cashMovementsLoading} columns={CashMovementsColumns(cashMovementsRefresh)}
                 pagination={
                     {
@@ -152,4 +171,45 @@ const CashMovementsListPage: React.FC = React.memo(function CashMovementsListPag
     );
 });
 
+
+type FinanceReportItem = {
+    year: string;
+    month: string;
+    value: string;
+};
+
+interface Props {
+    data: FinanceReportItem[];
+}
+
+export function FinanceChart({ data }: Props) {
+    const labels = data.map((d) => `${d.month}/${d.year}`);
+    const values = data.map((d) => parseFloat(d.value));
+
+    const chartData = {
+        labels,
+        datasets: [
+            {
+                label: "Faturamento",
+                data: values,
+                backgroundColor: "rgba(54, 162, 235, 0.7)", // azul
+                borderColor: "rgba(54, 162, 235, 1)",
+                borderWidth: 1,
+            },
+        ],
+    };
+
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: { position: "top" as const },
+            title: { display: true, text: "Relatório Financeiro Mensal" },
+        },
+        scales: { y: { beginAtZero: true } },
+    };
+
+    return <div className="h-[350px] mb-8">
+        <Bar data={chartData} options={options} />
+    </div>;
+}
 export default CashMovementsListPage;

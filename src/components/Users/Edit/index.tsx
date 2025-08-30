@@ -30,9 +30,9 @@ const EditSindicModal: React.FC<IUserFormProps> = React.memo(function EditSindic
             setOpen(false)
             form.resetFields()
             refresh()
-            notification.success({ message: 'Sindico', description: 'Sindico editado com sucesso' })
+            notification.success({ message: 'Usuario', description: 'Usuario editado com sucesso' })
         }).catch((error) => {
-            notification.error({ message: 'Sindico', description: error.response.data.message })
+            notification.error({ message: 'Usuario', description: error.response.data.message })
         }).finally(() => setLoading(false))
     }
 
@@ -53,7 +53,7 @@ const EditSindicModal: React.FC<IUserFormProps> = React.memo(function EditSindic
                 onOk={form.submit}
                 okButtonProps={{ size: 'large', loading }}
                 cancelButtonProps={{ size: 'large' }}
-                title="Editar sindico"
+                title="Editar usuario"
             >
                 <UserForm form={form} onSubmit={editUserHandle} />
             </Modal>

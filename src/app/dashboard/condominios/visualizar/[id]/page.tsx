@@ -43,7 +43,7 @@ const ViewCondominiumPage: React.FC = React.memo(function ViewCondominiumPage() 
                 {
                     key: 'readings',
                     label: 'Leituras',
-                    children: <ListReadings condominiumId={id as string} />
+                    children: <ListReadings condominiumId={id as string} hasActions={false} />
                 }
             ]} />
 

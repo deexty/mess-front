@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth } from "@/contexts/useAuth";
+import { IUserType } from "@/infra/interfaces/user.interface";
 import { authService, ILogin } from "@/infra/services/auth";
 import { App, Button, Form, Input } from "antd";
 import { useRouter } from "next/navigation";
@@ -9,13 +10,17 @@ import { useCallback } from "react";
 export default function Home() {
   const { login } = useAuth()
   const router = useRouter()
-  const { notification } = App.useApp();
+  const { notification, message } = App.useApp();
 
   const loginHandle = useCallback(async (values: ILogin) => {
     await authService.login(values).then(({ data: { token, user } }) => {
+      if (user?.role === IUserType.OPERATOR) {
+        return message.error('Operadores não possuem acesso ao sistema')
+      }
+
       login({ user, token })
       notification.success({ message: 'Login', description: 'Login realizado com sucesso' })
-      router.push('/dashboard/agenda')
+      router.push(user?.role === IUserType.ADMIN ? '/dashboard/agenda' : '/dashboard/condominios')
     }).catch((error) => {
       notification.error({ message: 'Login', description: error.response.data.message })
     })

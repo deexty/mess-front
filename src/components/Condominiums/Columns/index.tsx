@@ -1,4 +1,6 @@
+import { useAuth } from "@/contexts/useAuth"
 import { ICondominium } from "@/infra/interfaces/condominium.interface"
+import { IUserType } from "@/infra/interfaces/user.interface"
 import { condominiumService } from "@/infra/services/condominium"
 import { App } from "antd"
 import { ColumnType } from "antd/es/table"
@@ -9,6 +11,7 @@ import { IoEyeOutline } from "react-icons/io5"
 
 export const CondominiumColumns = (refresh: VoidFunction,): ColumnType<ICondominium>[] => {
     const router = useRouter()
+    const { user } = useAuth()
 
     const { notification } = App.useApp();
 
@@ -49,8 +52,8 @@ export const CondominiumColumns = (refresh: VoidFunction,): ColumnType<ICondomin
                 return (
                     <div className="flex gap-4">
                         <button className="text-primary cursor-pointer" onClick={() => router.push(`/dashboard/condominios/visualizar/${record.id}`)}><IoEyeOutline size={18} /></button>
-                        <button className="text-primary cursor-pointer" onClick={() => router.push(`/dashboard/condominios/editar/${record.id}`)}><HiMiniPencilSquare size={18} /></button>
-                        <button className="text-primary cursor-pointer" onClick={() => deleteHandle(record.id)}><FaRegTrashAlt size={14} color="red" /></button>
+                        {user?.role === IUserType.ADMIN && <button className="text-primary cursor-pointer" onClick={() => router.push(`/dashboard/condominios/editar/${record.id}`)}><HiMiniPencilSquare size={18} /></button>}
+                        {user?.role === IUserType.ADMIN && <button className="text-primary cursor-pointer" onClick={() => deleteHandle(record.id)}><FaRegTrashAlt size={14} color="red" /></button>}
                     </div>
                 )
             },

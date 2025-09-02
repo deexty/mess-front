@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import { api } from "./api";
-import { ICreateUser } from "../interfaces/user.interface";
+import { ICreateUser, IUserType } from "../interfaces/user.interface";
 
 
 export interface ILogin {
@@ -14,6 +14,7 @@ export interface IAuthResponse {
         id: number;
         name: string;
         login: string;
+        role: IUserType
         created_at: string;
         updated_at: string;
     }

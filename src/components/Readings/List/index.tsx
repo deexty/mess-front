@@ -12,6 +12,7 @@ import { ReadingStatusMapper } from "@/infra/interfaces/reading.interface";
 import SAEEModal from "../SAEEModal";
 import TelemetryModal from "../TelemetryModal";
 import CreateReadingModal from "../Create";
+import MultiUploadModal from "../MultiUploadModal";
 
 interface IListReadingsProps {
     condominiumId?: string
@@ -80,6 +81,7 @@ const ListReadings: React.FC<IListReadingsProps> = React.memo(function ListReadi
                     <Select className="min-w-[200px]" placeholder="Status" size="large" options={Object.keys(ReadingStatusMapper).map(s => ({ label: ReadingStatusMapper[s as keyof typeof ReadingStatusMapper], value: s }))} onChange={setStatusFilter} />
                 </div>
                 <div className="flex gap-4 items-center">
+                    <MultiUploadModal refresh={readingsRefresh} />
                     <CreateReadingModal refresh={readingsRefresh} />
                     {hasActions && (
                         <>

@@ -27,10 +27,17 @@ const createReading = async (data: FormData): Promise<AxiosResponse<IReading>> =
         "Content-Type": "multipart/form-data"
     }
 });
+const getAllWithoutPagination = async (): Promise<IHydrometer[]> => {
+    const { data } = await api.get<IHydrometersResponse>(
+        "/hydrometer?page=1&per_page=999999"
+    );
+    return data.result;
+};
 
 export const hydrometerService = {
     getAll,
     updateReading,
+    getAllWithoutPagination,
     create,
     remove,
     update,

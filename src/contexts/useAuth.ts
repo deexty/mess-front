@@ -1,4 +1,5 @@
 // useAuth.ts
+import { IUserType } from '@/infra/interfaces/user.interface';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
@@ -6,6 +7,7 @@ type User = {
     id: string | number;
     name: string;
     login: string;
+    role: IUserType
 };
 
 type AuthState = {

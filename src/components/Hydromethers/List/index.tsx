@@ -6,6 +6,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { HydrometherColumn } from "./Columns";
 import CreateHydrometherModal from "../Create";
 import CreateReadingModal from "@/components/Readings/Create";
+import UploadHydrometersModal from "../Upload";
 
 interface IListHydromethersProps {
     condominiumId?: string
@@ -55,6 +56,7 @@ const ListHydromethers: React.FC<IListHydromethersProps> = React.memo(function L
                 <Input value={searchText} onChange={(e) => setSearchText(e.target.value)} placeholder="Buscar por identificador" className="flex-1 max-w-1/3" size="large" />
                 <div className="flex gap-4 items-center">
                     <CreateReadingModal condominiumId={condominiumId as string} />
+                    <UploadHydrometersModal refresh={hydrometersRefresh} condominiumId={condominiumId as string} />
                     <CreateHydrometherModal refresh={hydrometersRefresh} condominiumId={condominiumId as string} />
                 </div>
 

@@ -11,6 +11,7 @@ import { QRCodeCanvas } from "qrcode.react";
 import ReactDOM from "react-dom/client";
 import { hydrometerService } from "@/infra/services/hydromether";
 import { IoQrCodeOutline } from "react-icons/io5";
+import UploadHydrometersModal from "../Upload";
 
 interface IListHydromethersProps {
     condominiumId?: string
@@ -191,6 +192,7 @@ const ListHydromethers: React.FC<IListHydromethersProps> = React.memo(function L
                 <div className="flex gap-4 items-center">
                     <Button onClick={handleExportQRCode} icon={<IoQrCodeOutline />} size="large" >Exportar QR Codes</Button>
                     <CreateReadingModal condominiumId={condominiumId as string} />
+                    <UploadHydrometersModal refresh={hydrometersRefresh} condominiumId={condominiumId as string} />
                     <CreateHydrometherModal refresh={hydrometersRefresh} condominiumId={condominiumId as string} />
                 </div>
 

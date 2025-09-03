@@ -13,20 +13,27 @@ export const CondominiumColumns = (refresh: VoidFunction,): ColumnType<ICondomin
     const router = useRouter()
     const { user } = useAuth()
 
-    const { notification } = App.useApp();
+    const { notification, modal } = App.useApp();
 
     const deleteHandle = async (id: number) => {
-        await condominiumService.remove(id.toString()).then(() => {
-            notification.success({
-                message: 'Condominium',
-                description: 'Condominium removido com sucesso'
-            })
-            refresh()
-        }).catch(() => {
-            notification.error({
-                message: 'Condominium',
-                description: 'Erro ao remover condominium'
-            })
+        modal.confirm({
+            okText: 'Excluir',
+            centered: true,
+            title: 'Deseja realmente excluir esse condominio?',
+            onOk: async () => {
+                await condominiumService.remove(id.toString()).then(() => {
+                    notification.success({
+                        message: 'Condominium',
+                        description: 'Condominium removido com sucesso'
+                    })
+                    refresh()
+                }).catch(() => {
+                    notification.error({
+                        message: 'Condominium',
+                        description: 'Erro ao remover condominium'
+                    })
+                })
+            }
         })
     }
 

@@ -39,7 +39,7 @@ const SAEEModal: React.FC = React.memo(function SAEEModal() {
 
     return (
         <>
-            <Button onClick={() => setOpen(true)} size="large" type="primary">Gerar SAAE</Button>
+            <Button onClick={() => setOpen(true)} size="large" >Gerar SAAE</Button>
             <Modal title="Gerar SAAE" open={open} onCancel={() => {
                 setOpen(false)
                 form.resetFields()

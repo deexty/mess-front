@@ -50,6 +50,14 @@ const ListReadings: React.FC<IListReadingsProps> = React.memo(function ListReadi
     })
 
     useEffect(() => {
+        const timer = setInterval(() => {
+            readingsRefresh()
+        }, 5000)
+
+        return () => clearInterval(timer)
+    }, [])
+
+    useEffect(() => {
         const newFilters: IParseFilter[] = []
 
         if (statusFilter) {
